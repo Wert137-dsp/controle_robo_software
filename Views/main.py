@@ -1,12 +1,9 @@
 import sys
 import os
+from Models import Programa, Posicao
+from Controllers import comunicacaoMqtt
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-
-
-from Models.Programa import Programa
-from Models.Posicao import Posicao
 
 pos1 = Posicao()
 pos1.posicao(314, 514, 1030, 1240)
@@ -18,4 +15,7 @@ prog1 = Programa()
 prog1.adicionar_passo(pos1.lista_movimento)
 prog1.adicionar_passo(pos2.lista_movimento)
 
-prog1.executar_programa()
+passos = prog1.executar_programa()
+
+for passo in range(len(passos)):
+    print(passos[passo])

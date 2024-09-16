@@ -1,5 +1,3 @@
-from Models.Posicao import Posicao
-
 class Programa():
 
     def __init__(self):
@@ -7,7 +5,7 @@ class Programa():
 
     def executar_programa(self):
         for passo in self.passos:
-            print(passo)
-
+            pass
+        return self.passos
     def adicionar_passo(self, posicao):
         self.passos.append(posicao)
