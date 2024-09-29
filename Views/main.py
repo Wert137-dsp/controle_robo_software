@@ -1,21 +1,31 @@
 import sys
 import os
-from Models import Programa, Posicao
-from Controllers import comunicacaoMqtt
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from Models import Programa, Posicao, Delay, Robo
+
+print("Sistema de controle de robo: ")
+
+decisao = 0
+
+robo1 = Robo()
+
+while decisao != 5:
 
 
+    decisao = abs(int(input("Escolha uma opção: (1- Criar programa, 2- criar movimento, 3, 4, 5 - sair): ")))
+    
 
-pos1 = Posicao()
-pos1.posicao(314, 514, 1030, 1240)
+    if decisao == 1: 
 
-pos2 = Posicao()
-pos2.posicao(34, 54, 100, 120)
+        prog1 = Programa()
+        
+        #nome_robo = input("Digite o nome do robo: ")
+        prog1.set_nome(input("Digite o nome do programa: "))
+        prog1.set_descricao(input("Descrição: "))
 
-prog1 = Programa()
-prog1.adicionar_passo(pos1.lista_movimento)
-prog1.adicionar_passo(pos2.lista_movimento)
+        robo1.adicionar_programa(prog1.get_nome(), prog1.get_descricao(), prog1.get_programa())
 
-passos = prog1.executar_programa()
-
-for passo in range(len(passos)):
-    print(passos[passo])
+        print(robo1.pegar_programa())
+    

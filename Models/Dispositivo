@@ -1,0 +1,9 @@
+class Dispositivo():
+
+    def __init__(self, nome, token, descricao = ""):
+    
+        self.__nome = nome
+        self.__token = token
+        self.__desc = descricao
+        
+        

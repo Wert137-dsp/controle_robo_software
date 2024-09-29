@@ -1,12 +1,18 @@
-from Dispositivo import Dispositivo
 
-class Robo(Dispositivo):
-    def __init(self, nome, token):
-        super.__init__(nome, token)
+class Robo():
+    def __init__(self):
+        #super.__init__(nome, token)
         self.lista_programas = []
 
-    def adicionar_programa(self, prog):
-        self.lista_programas.append(prog)
+    def adicionar_programa(self, nome_programa, descricao , conteudo):
+        self.lista_programas.append({"nome_programa": nome_programa, "descricao" : descricao, "conteudo": conteudo})
+    
+    def pegar_programa(self, ind = 0):
+
+        if ind == 0:
+            return self.lista_programas
+        else:
+            return self.lista_programas[ind-1]
     
     def deletar_programa(self, id_programa):
         self.lista_programas.pop(id_programa)
