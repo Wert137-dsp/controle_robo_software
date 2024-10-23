@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8"> <!-- Define a codificação de caracteres como UTF-8  || permite todos os tipos de caracteres-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Para compatibilidade com IE  || diversos tipos de tela-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsividade || se adapte bem a diferentes tamanhos de tela e dispositivos.-->
+    <title>Tela de Login</title> <!-- Título da página -->
+
+    <!-- Link para o arquivo CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Link para Font Awesome, usado para ícones -->
+    <script src="https://kit.fontawesome.com/e3e0ab7579.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container"> <!-- Contêiner principal -->
+
+        <div class="content first-content"> <!-- Primeira parte do conteúdo (Login) -->
+
+            <div class="first-column"> <!-- Coluna para Login -->
+                <h2 class="title title-primary">Bem Vindo ao S.R.C!</h2> <!-- Título principal -->
+                <p class="description description-primary">Para se manter conectado conosco</p> <!-- Descrição -->
+                <p class="description description-primary">por favor logue com suas informações pessoais</p> <!-- Descrição -->
+                <button id="signin" class="btn btn-primary">entrar</button> <!-- Botão para entrar -->
+            </div><!-- FIRST-COLUMN -->
+
+            <div class="second-column"> <!-- Coluna para Cadastro -->
+                <h2 class="title title-second">Criar conta</h2> <!-- Título do Cadastro -->
+                <div class="social-midia"> <!-- Seção de mídias sociais -->
+                    <ul class="list-social-midia"> <!-- Lista de ícones sociais -->
+                        <a class="link-social-midia" href="#">
+                            <li class="item-social-midia"><i class="fab fa-facebook-f"></i></li> <!-- Ícone do Facebook -->
+                        </a>
+                        <a class="link-social-midia" href="#">
+                            <li class="item-social-midia"><i class="fab fa-google"></i></li> <!-- Ícone do Google -->
+                        </a>
+                        <a class="link-social-midia" href="#">
+                            <li class="item-social-midia"><i class="fab fa-linkedin-in"></i></li> <!-- Ícone do LinkedIn -->
+                        </a>
+                    </ul>
+                </div><!-- SOCIAL-MIDIA -->
+                <p class="description description-second">registre-se com seu email</p> <!-- Instrução para registro -->
+                <form class="form"> <!-- Formulário de Cadastro -->
+                    <label class="label-input icon-modify" for="">
+                        <i class="fas fa-user"></i> <!-- Ícone para Nome -->
+                        <input type="text" placeholder="Nome" required> <!-- Campo de Nome -->
+                    </label>
+                    <label class="label-input icon-modify" for="">
+                        <i class="fas fa-envelope"></i> <!-- Ícone para Email -->
+                        <input type="email" placeholder="Email" required> <!-- Campo de Email -->
+                    </label>
+                    <label class="label-input icon-modify" for="">
+                        <i class="fas fa-lock"></i> <!-- Ícone para Senha -->
+                        <input type="password" placeholder="Senha" required> <!-- Campo de Senha -->
+                    </label>
+                    <button class="btn btn-second">registre-se</button> <!-- Botão para registrar -->
+                </form>
+            </div><!-- SECOND-COLUMN -->
+
+        </div><!-- CONTENT FIRST-CONTENT -->
+        
+        <div class="content second-content"> <!-- Segunda parte do conteúdo (Cadastro) -->
+
+            <div class="first-column"> <!-- Coluna para informações de boas-vindas -->
+                <h2 class="title title-primary">Olá, bem-vindo!</h2> <!-- Título de boas-vindas -->
+                <p class="description description-primary">Insira seus dados pessoais</p> <!-- Descrição -->
+                <p class="description description-primary">e comece sua jornada conosco.</p> <!-- Descrição -->
+                <button id="signup" class="btn btn-primary">registre-se</button> <!-- Botão para registrar -->
+            </div><!-- FIRST-COLUMN -->
+
+            <div class="second-column"> <!-- Coluna para Login -->
+                <h2 class="title title-second">Entre na sua conta</h2> <!-- Título de Login -->
+                <div class="social-midia"> <!-- Seção de mídias sociais -->
+                    <ul class="list-social-midia"> <!-- Lista de ícones sociais -->
+                        <a class="link-social-midia" href="#">
+                            <li class="item-social-midia"><i class="fab fa-facebook-f"></i></li> <!-- Ícone do Facebook -->
+                        </a>
+                        <a class="link-social-midia" href="#">
+                            <li class="item-social-midia"><i class="fab fa-google"></i></li> <!-- Ícone do Google -->
+                        </a>
+                        <a class="link-social-midia" href="#">
+                            <li class="item-social-midia"><i class="fab fa-linkedin-in"></i></li> <!-- Ícone do LinkedIn -->
+                        </a>
+                    </ul>
+                </div><!-- SOCIAL-MIDIA -->
+                <p class="description description-second">Conectar-se com seu email</p> <!-- Instrução para Login -->
+                <form class="form"> <!-- Formulário de Login -->
+                    <label class="label-input icon-modify" for="">
+                        <i class="fas fa-envelope"></i> <!-- Ícone para Email -->
+                        <input type="email" placeholder="Email" required> <!-- Campo de Email -->
+                    </label>
+                    <label class="label-input icon-modify" for="">
+                        <i class="fas fa-lock"></i> <!-- Ícone para Senha -->
+                        <input type="password" placeholder="Senha" required> <!-- Campo de Senha -->
+                    </label>
+                    <a class="password" href="#">esqueceu a senha?</a> <!-- Link para recuperação de senha -->
+                    <button class="btn btn-second">entrar</button> <!-- Botão para entrar -->
+                </form>
+            </div><!-- SECOND-COLUMN -->
+
+        </div><!-- CONTENT SECOND-CONTENT -->
+
+    </div><!-- CONTAINER -->
+
+    <!-- Importa o arquivo JavaScript -->
+    <script src="js/script.js"></script>
+</body>
+</html>

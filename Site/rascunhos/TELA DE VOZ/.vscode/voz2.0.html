@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle do Robô - Seja Bem-Vindo</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://kit.fontawesome.com/e3e0ab7579.js" crossorigin="anonymous"></script>
+    <style>
+        /* Estilo da página */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .first-column {
+            text-align: center;
+            border-right: 2px solid #ddd;
+        }
+        .title-primary {
+            font-size: 24px;
+            color: #333;
+        }
+        .description-primary {
+            font-size: 18px;
+            color: #666;
+        }
+        .second-column {
+            padding-left: 20px;
+        }
+        h2 {
+            font-size: 22px;
+            color: #333;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px 0;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        #gripper-status {
+            font-weight: bold;
+            color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content first-content">
+            <div class="first-column">
+                <h2 class="title title-primary">Controle do Robô</h2>
+                <p class="description description-primary">Movimentação do robô</p>
+            </div><!-- FIRST-COLUMN -->
+
+            <div class="second-column">
+                <div class="controls">
+                    <h2>Movimentação do Robô por Comando de Voz</h2>
+                    <!-- Botão para iniciar o reconhecimento de voz -->
+                    <button class="btn" id="startRecognitionBtn">Falar Comando</button>
+                    <p>Comando: <strong id="voice-command">Nenhum</strong></p>
+                </div>  
+                
+            </div><!-- CONTENT FIRST-CONTENT -->
+        </div><!-- CONTAINER --> 
+
+    <script>
+        // Função para reconhecimento de voz com a API Web Speech
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'pt-BR'; // Definindo a linguagem para português
+
+        // Quando o botão for clicado, começa o reconhecimento de voz
+        document.getElementById('startRecognitionBtn').addEventListener('click', function() {
+            recognition.start();
+        });
+
+        // Quando o reconhecimento de voz receber o resultado
+        recognition.onresult = function(event) {
+            const comando = event.results[0][0].transcript; // Captura o comando reconhecido
+            document.getElementById('voice-command').textContent = comando; // Atualiza a interface com o comando
+
+            // Lógica para controlar o robô com base no comando de voz
+            if (comando.includes('abrir garra')) {
+                document.getElementById('gripper-status').textContent = 'Aberta';
+            } else if (comando.includes('fechar garra')) {
+                document.getElementById('gripper-status').textContent = 'Fechada';
+            } else {
+                alert('Comando de voz não reconhecido');
+            }
+        };
+
+        // Adiciona eventos de clique aos botões de controle da garra
+        document.getElementById('openBtn').addEventListener('click', function() {
+            document.getElementById('gripper-status').textContent = 'Aberta'; // Atualiza o status para "Aberta"
+        });
+
+        document.getElementById('closeBtn').addEventListener('click', function() {
+            document.getElementById('gripper-status').textContent = 'Fechada'; // Atualiza o status para "Fechada"
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+/* IMPORT FONT OPEN SANS */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap');
+
+/* RESETS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* CONTAINER */
+.container {
+    background-color: #ecf0f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.content {
+    background-color: #fff;
+    border-radius: 15px;
+    width: 80%;
+    max-width: 960px;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: auto;
+    padding: 20px; /* Adicionando padding para mais espaço interno */
+}
+
+/* TITULOS */
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px; /* Espaçamento abaixo do título */
+}
+
+.title-primary {
+    color: #2527aa;
+}
+
+/* DESCRIÇÕES */
+.description {
+    font-size: 15px;
+    color: #34495e;
+    margin-bottom: 20px; /* Espaçamento abaixo da descrição */
+}
+
+/* FORMULÁRIO */
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.form input {
+    width: 100%;
+    height: 45px;
+    border: none;
+    background-color: #ecf0f1;
+    margin: 10px 0; /* Espaçamento entre os campos */
+    padding: 0 10px; /* Padding interno */
+    border-radius: 8px; /* Bordas arredondadas para os campos */
+}
+
+.label-input {
+    display: flex;
+    align-items: center;
+}
+
+/* BOTÕES */
+.btn {
+    border-radius: 15px;
+    text-transform: uppercase;
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    border: none;
+    height: 45px; /* Altura dos botões */
+    margin-top: 10px; /* Margem acima do botão */
+}
+
+.btn-primary {
+    background-color: #2544aa;
+    transition: background-color 0.5s;
+}
+
+.btn-primary:hover {
+    background-color: #1e367a;
+}
+
+/* ESTILIZAÇÕES PARA ÍCONES */
+.icon-modify {
+    color: #7f8c8d;
+    margin-right: 10px;
+}
+
+/* VERSÃO MOBILE */
+@media screen and (max-width: 600px) {
+    .content {
+        width: 90%;
+    }
+}
