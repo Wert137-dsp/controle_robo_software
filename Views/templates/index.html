@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle do Robô - Seja Bem-Vindo</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <script src="https://kit.fontawesome.com/e3e0ab7579.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="content first-content">
+            <div class="first-column">
+                <h2 class="title title-primary">Controle do Robô</h2>
+                <p class="description description-primary">Movimentação do robô</p>
+            </div><!-- FIRST-COLUMN -->
+
+            <div class="second-column">
+                <div class="controls">
+                    <h2>Movimentação do Robô</h2>
+                    <div class="slider-container">
+                        <label for="a">A:</label>
+                        <span id="a-value">0</span>
+                        <!-- Slider para controle do eixo X -->
+                        <input type="range" id="eixo_a" name="a" min="0" max="180" value="0">
+                    </div>
+                    <div class="slider-container">
+                        <label for="b">B:</label>
+                        <span id="b-value">0</span>
+                        <!-- Slider para controle do eixo Y -->
+                        <input type="range" id="eixo_b" name="b" min="0" max="180" value="0">
+                    </div>
+                    <div class="slider-container">
+                        <label for="c">C:</label>
+                        <span id="c-value">0</span>
+                        <!-- Slider para controle do eixo Z -->
+                        <input type="range" id="eixo_c" name="c" min="0" max="180" value="0">
+                    </div>
+
+                    <div class="slider-container">
+                        <label for="d">D:</label>
+                        <span id="d-value">0</span>
+                        <!-- Slider para controle do eixo X -->
+                        <input type="range" id="eixo_d" name="d" min="0" max="180" value="0">
+                    </div>
+                    <div class="slider-container">
+                        <label for="e">E:</label>
+                        <span id="e-value">0</span>
+                        <!-- Slider para controle do eixo Y -->
+                        <input type="range" id="eixo_e" name="e" min="0" max="180" value="0">
+                    </div>
+                    <div class="slider-container">
+                        <label for="f">F:</label>
+                        <span id="f-value">0</span>
+                        <!-- Slider para controle do eixo Z -->
+                        <input type="range" id="eixo_f" name="f" min="0" max="180" value="0">
+                    </div>
+                    <!-- Botão para mover o robô -->
+                    <button class="btn" id="moveBtn">Mover Robô</button>
+                </div>  
+                <div class="gripper">
+                    <h2>Controle da Garra</h2>
+                    <!-- Botão para abrir a garra -->
+                    <button class="btn" id="openBtn">Abrir Garra</button>
+                    <!-- Botão para fechar a garra -->
+                    <button class="btn" id="closeBtn">Fechar Garra</button>
+                    <p>Status da Garra: <strong id="gripper-status">Fechada</strong></p>
+                    <!-- Exibição do status atual da garra -->
+                </div>
+            </div><!-- CONTENT FIRST-CONTENT -->
+        </div><!-- CONTAINER --> 
+
+        <script src="{{url_for('static', filename= 'js/script.js')}}"></script>
+    <script>
+        // Função para atualizar o valor exibido ao lado do slider
+        function updateValue(axis) {
+            const value = document.getElementById(axis).value; // Obtém o valor do slider
+            document.getElementById(axis + '-value').textContent = value; // Atualiza o texto exibido
+        }
+
+        // Adiciona eventos de clique aos botões de controle da garra
+        document.getElementById('openBtn').addEventListener('click', function() {
+            document.getElementById('gripper-status').textContent = 'Aberta'; // Atualiza o status para "Aberta"
+        });
+
+        document.getElementById('closeBtn').addEventListener('click', function() {
+            document.getElementById('gripper-status').textContent = 'Fechada'; // Atualiza o status para "Fechada"
+        });
+    </script>
+</body>
+</html>
