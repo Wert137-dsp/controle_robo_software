@@ -1,7 +1,7 @@
 import sys
 import os
 
-from flask import Flask, render_template, url_for, session, redirect, request
+from flask import Flask, render_template, url_for, session, redirect, request, jsonify
 import paho
 import secrets
 import time
@@ -12,6 +12,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Models import Programa, Posicao, Delay, Robo
 
 from Controllers import comunicacao_mqtt as cmqtt
+from Controllers import conexao_bd
 
 mqt = cmqtt.comunicacaoMqtt()
 
@@ -56,14 +57,27 @@ def webPage():
         else:
             return redirect("/")
         
+    @app.route("/enviarEixo", methods=["POST"])
+    def receberEixo():
+       dados = request.json
+       print(dados.get("eixo")+": "+dados.get("valor"))
+
+       return jsonify({"message": "Eixo recebido"}), 200
+    
+    @app.route("/salvarPosicao", methods = ["POST"])
+    def salvarPosicao():
+        dados = request.json
+
+        return jsonify({"message": "Salvo"}), 200
+
     app.run()
-   
+
 
 mqtt_tred = threading.Thread(target=tred_mqtt)
-mqtt_tred.start()
+#mqtt_tred.start()
 
 thred1 = threading.Thread(target=teste)
-thred1.start()
+#thred1.start()
 
 
 
