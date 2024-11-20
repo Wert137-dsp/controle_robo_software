@@ -8,6 +8,7 @@ window.onload = function(){
     eixoE = document.getElementById("eixo_e")
     eixoF = document.getElementById("eixo_f")
 
+    nomePosicao = document.getElementById("nomePosicao")
     btnSalvar = document.getElementById("moveBtn")
 
     function salvarPosicao(){
@@ -20,13 +21,13 @@ window.onload = function(){
                 "Content-Type" : "application/json"
             },
             body: JSON.stringify({
-
-                eixoA: eixoA.valor,
-                eixoB: eixoB.valor,
-                eixoC: eixoC.valor,
-                eixoD: eixoD.valor,
-                eixoE: eixoE.valor,
-                eixoF: eixoF.valor
+                nome: nomePosicao.value,
+                eixoA: eixoA.value,
+                eixoB: eixoB.value,
+                eixoC: eixoC.value,
+                eixoD: eixoD.value,
+                eixoE: eixoE.value,
+                eixoF: eixoF.value
             })
         })
         .then(response => response.json())
@@ -65,7 +66,18 @@ window.onload = function(){
         })
     }
 
-    console.log(eixoA)
+    
+    btnSalvar.addEventListener("click", function(){
+        if(!(nomePosicao.value == "")){
+
+            salvarPosicao()
+        }else{
+
+            nomePosicao.onFocus()
+        }
+        
+    })
+
     eixoA.addEventListener("input", function(){
 
         console.log("Eixo A: "+eixoA.value)

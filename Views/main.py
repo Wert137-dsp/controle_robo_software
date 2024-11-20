@@ -14,6 +14,7 @@ from Models import Programa, Posicao, Delay, Robo
 from Controllers import comunicacao_mqtt as cmqtt
 from Controllers import conexao_bd
 
+
 mqt = cmqtt.comunicacaoMqtt()
 
 def tred_mqtt():
@@ -68,6 +69,17 @@ def webPage():
     def salvarPosicao():
         dados = request.json
 
+        posicao = Posicao()
+        posicao.posicao(dados.get("nome"), dados.get("eixoA"), dados.get("eixoB"), dados.get("eixoC"), dados.get("eixoD"), dados.get("eixoE"), dados.get("eixoF"))
+        sql = "insert into posicao(nome, eixo1, eixo2, eixo3, eixo4,eixo5,eixo6)values(%s,%s,%s,%s,%s,%s,%s)"
+        
+        valores = (dados.get("nome"), dados.get("eixoA"), dados.get("eixoB"), dados.get("eixoC"), dados.get("eixoD"), dados.get("eixoE"), dados.get("eixoF"))
+        conexao_bd.cursor.execute(sql, valores)
+        
+        conexao_bd.conexao.commit()
+        
+        print(valores)
+        print(posicao.get_lista_movimento())
         return jsonify({"message": "Salvo"}), 200
 
     app.run()
