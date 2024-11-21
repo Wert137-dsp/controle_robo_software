@@ -71,16 +71,30 @@ def webPage():
 
         posicao = Posicao()
         posicao.posicao(dados.get("nome"), dados.get("eixoA"), dados.get("eixoB"), dados.get("eixoC"), dados.get("eixoD"), dados.get("eixoE"), dados.get("eixoF"))
-        sql = "insert into posicao(nome, eixo1, eixo2, eixo3, eixo4,eixo5,eixo6)values(%s,%s,%s,%s,%s,%s,%s)"
         
-        valores = (dados.get("nome"), dados.get("eixoA"), dados.get("eixoB"), dados.get("eixoC"), dados.get("eixoD"), dados.get("eixoE"), dados.get("eixoF"))
-        conexao_bd.cursor.execute(sql, valores)
+        sq = "select * from posicao where nome = %s"
+        valores = (dados.get("nome"),)
+        conexao_bd.cursor.execute(sq, valores)
+
+        dic = conexao_bd.cursor.fetchall()
+
+
+        if len(dic) == 0:
+
+            sql = "insert into posicao(nome, eixo1, eixo2, eixo3, eixo4,eixo5,eixo6)values(%s,%s,%s,%s,%s,%s,%s)"
+            
+            valores = (dados.get("nome"), dados.get("eixoA"), dados.get("eixoB"), dados.get("eixoC"), dados.get("eixoD"), dados.get("eixoE"), dados.get("eixoF"))
+            conexao_bd.cursor.execute(sql, valores)
+            
+            conexao_bd.conexao.commit()
         
-        conexao_bd.conexao.commit()
-        
-        print(valores)
-        print(posicao.get_lista_movimento())
-        return jsonify({"message": "Salvo"}), 200
+            print(valores)
+            print(posicao.get_lista_movimento())
+
+            return jsonify({"message": "Salvo"}), 200
+        else:
+            print("Nome de posição já salva")
+            return jsonify({"message": "Nome da posição já salva"}), 400
 
     app.run()
 
@@ -90,16 +104,6 @@ mqtt_tred = threading.Thread(target=tred_mqtt)
 
 thred1 = threading.Thread(target=teste)
 #thred1.start()
-
-
-
-
-
-
-
-
-
-
 
 try:
     webPage()

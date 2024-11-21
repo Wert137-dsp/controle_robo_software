@@ -9,7 +9,7 @@ window.onload = function(){
     eixoF = document.getElementById("eixo_f")
 
     nomePosicao = document.getElementById("nomePosicao")
-    btnSalvar = document.getElementById("moveBtn")
+    btnSalvar = document.getElementById("saveBtn")
 
     function salvarPosicao(){
 
@@ -33,11 +33,13 @@ window.onload = function(){
         .then(response => response.json())
         .then(data =>{
 
-            console.log("Ok")
+            alert(data.message)
         })
         .catch(error => {
 
+            
             console.log("Erro ao salvar")
+            alert(error)
         })
     }
 
