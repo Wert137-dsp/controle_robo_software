@@ -3,6 +3,7 @@ import os
 
 from flask import Flask, render_template, url_for, session, redirect, request, jsonify
 import paho
+import json
 import secrets
 import time
 import threading
@@ -60,10 +61,10 @@ def webPage():
         
     @app.route("/enviarEixo", methods=["POST"])
     def receberEixo():
-       dados = request.json
-       print(dados.get("eixo")+": "+dados.get("valor"))
-
-       return jsonify({"message": "Eixo recebido"}), 200
+        dados = request.json
+        print(dados.get("eixo")+": "+dados.get("valor"))
+        mqt.enviar_comando(dados)
+        return jsonify({"message": "Eixo recebido"}), 200
     
     @app.route("/salvarPosicao", methods = ["POST"])
     def salvarPosicao():
@@ -96,11 +97,32 @@ def webPage():
             print("Nome de posição já salva")
             return jsonify({"message": "Nome da posição já salva"}), 400
 
+
+    @app.route("/moverRobo", methods = ["POST"])
+    def moverRobo():
+
+        dados = request.json
+        
+        print(dados)
+        mqt.enviar_comando(dados)
+
+        return jsonify({"message": "Ok"}), 200 
+    
+    @app.route("/getPosicoes", methods = ["POST"])
+    def getPosicoes():
+
+        conexao_bd.cursor.execute("select id_posicao, nome, eixo1, eixo2, eixo3, eixo4, eixo5, eixo6 from posicao")
+        colunas = conexao_bd.cursor.column_names
+        result = [dict(zip(colunas, linhas)) for linhas in conexao_bd.cursor.fetchall()]
+        print(result)
+        return jsonify(result)
+    
+    
     app.run()
 
 
 mqtt_tred = threading.Thread(target=tred_mqtt)
-#mqtt_tred.start()
+mqtt_tred.start()
 
 thred1 = threading.Thread(target=teste)
 #thred1.start()

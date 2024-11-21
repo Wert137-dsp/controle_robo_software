@@ -22,6 +22,9 @@
                     <div class="controls">
                         <h2>Movimentação do Robô</h2>
                         <input type = "text" id = "nomePosicao">
+                        <select name = "select_position" id = "select_position">
+                            
+                        </select>
                         <div class="slider-container">
                             <label for="a">A:</label>
                             <span id="a-value">0</span>
@@ -60,24 +63,26 @@
                             <input type="range" id="eixo_f" name="f" min="0" max="180" value="0">
                         </div>
                         <!-- Botão para mover o robô -->
-                        <button class="btn" id="moveBtn">Mover Robô</button>
                         <button class="btn" id="saveBtn">Salvar Posição</button>
+                        <button class="btn" id="moveBtn">Mover Robô</button>
                     </div>  
                     <div class="gripper">
-                        <h2>Controle da Garra</h2>
-                        <!-- Botão para abrir a garra -->
+
+                       
+                     <h2>Controle da Garra</h2>
+                      
                         <button class="btn" id="openBtn">Abrir Garra</button>
-                        <!-- Botão para fechar a garra -->
+                       
                         <button class="btn" id="closeBtn">Fechar Garra</button>
                         <p>Status da Garra: <strong id="gripper-status">Fechada</strong></p>
-                        <!-- Exibição do status atual da garra -->
+                        
                     </div>
 
                 </div>
 
                 <div class="mini-container">
 
-                    Teste123123
+                   <select item = "position"></select>
                 </div>
                
             </div><!-- CONTENT FIRST-CONTENT -->
