@@ -215,6 +215,9 @@ window.onload = function(){
 
     getPosicoes();
 
+    setInterval(() => {
+        fetch("/checarComando", {method: "POST"})
+    }, 5000);
 }
 
 

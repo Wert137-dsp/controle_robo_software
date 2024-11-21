@@ -1,6 +1,7 @@
 import speech_recognition as sr
 import re
 import pyttsx3
+
 ## isso aq importa os drivers
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -29,6 +30,8 @@ while True:
         # faz ajuste no microfone e melhora o audio
         mic.adjust_for_ambient_noise(source)
         print("Vamos começar, fale alguma coisa...")
+        engine.say("Vamos começar, fale alguma coisa...")
+        engine.runAndWait()
         # define que o audio vai ser tudo que o microfone pegar, tendo em base a source
         audio = mic.listen(source)
         #um pequeno trycath
@@ -61,6 +64,7 @@ while True:
                 navegador = webdriver.Opera(executable_path=caminho_operadriver, options=opera_options)
                 navegador.get("https://www.google.com")
 
+               
 
             # Comando para parar o loop
             elif re.search(r'\bparar\b', frase, re.IGNORECASE):
@@ -68,7 +72,9 @@ while True:
                 engine.say("Parando o sistema.")
                 engine.runAndWait()
                 break
-            print("Você falou: " + frase)        
+            print("Você falou: " + frase)
+            engine.say(frase) 
+            engine.runAndWait()  
             # a maioria de tratamento de erros plausiveis.
         except sr.UnknownValueError:
             print("Ops, não consegui entender o que foi dito.")

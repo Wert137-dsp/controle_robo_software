@@ -14,6 +14,7 @@ from Models import Programa, Posicao, Delay, Robo
 
 from Controllers import comunicacao_mqtt as cmqtt
 from Controllers import conexao_bd
+from Controllers.assistente_virtual import *
 
 
 mqt = cmqtt.comunicacaoMqtt()
@@ -26,6 +27,23 @@ def teste():
     while True:
         time.sleep(1)
         mqt.enviar_comando(input("Digite um comando: "))
+
+
+def executarPosicao(nome):
+
+        print("123123")
+        sql = "select eixo1, eixo2, eixo3, eixo4, eixo5, eixo6 from posicao where nome = %s"
+        valores = (nome,)
+        conexao_bd.cursor.execute(sql, valores)
+
+        res = conexao_bd.cursor.fetchall()
+
+        print(res)
+        mqt.enviar_comando(json.dumps(res))
+
+
+
+        
 
 def webPage():
 
@@ -117,7 +135,60 @@ def webPage():
         print(result)
         return jsonify(result)
     
+    @app.route("/checarComando", methods = ["POST"])
+    def checar_comando():
+        
+
+        try:
+            mic = sr.Recognizer()
+            with sr.Microphone() as source:
+                print("Ajustando para ruído ambiente...")
+                mic.adjust_for_ambient_noise(source)
+                print("Pronto, pode falar.")
+                audio = mic.listen(source)
+
+            # Processar o comando de voz
+            frase = mic.recognize_google(audio, language='pt-BR')
+            print(f"Você disse: {frase}")
+            
+            if re.search(r'\bExecutar\b', frase, re.IGNORECASE):
+                print("Comando 'Executar' detectado.")
+                executarPosicao("Teste2")
+
+                engine.say("Executando comando.")
+                engine.runAndWait()
+                
+                
+            
+                # Executar a função de posição
+                
+                
+            elif re.search(r'\bPare\b', frase, re.IGNORECASE):
+                print("Encerrando o assistente.")
+                engine.say("Encerrando o assistente.")
+                engine.runAndWait()
+                
+
+        except sr.UnknownValueError:
+            print("Não consegui entender o que você disse.")
+            engine.say("Não consegui entender o que você disse.")
+            engine.runAndWait()
+        except sr.RequestError as e:
+            print(f"Erro de serviço de reconhecimento: {e}")
+            engine.say("Erro ao acessar o serviço de reconhecimento.")
+            engine.runAndWait()
+            
+        except Exception as e:
+            print(f"Erro inesperado: {e}")
+        finally:
+            # Remover o 'return' aqui para permitir a escuta contínua
+            print("Voltando a ouvir")
+            
     
+        return jsonify({"message": "Ok"}), 200 
+
+      
+
     app.run()
 
 
@@ -127,14 +198,21 @@ mqtt_tred.start()
 thred1 = threading.Thread(target=teste)
 #thred1.start()
 
+#thred_assistente = threading.Thread(target=checar_comando)
+#thred_assistente.daemon = True  # Garante que o thread será encerrado com o programa principal
+#thred_assistente.start()
+
 try:
     webPage()
     while True:
+        
+        checar
         time.sleep(1)
 except KeyboardInterrupt:   
     mqt.desconectar()
     mqtt_tred.join()
     thred1.join()
+    
 
 '''
 
