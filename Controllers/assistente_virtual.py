@@ -32,7 +32,7 @@ def chamar_assistente():
 
 
 def iniciar_assistente():
-   
+   while True:
     print("Esperando comando")
     # acha o microfone disponivel
     mic = sr.Recognizer()
@@ -49,16 +49,20 @@ def iniciar_assistente():
 
         # a frase vai levar em conta a ia do google de reconhecimento de voz, em base a linguagem PT BR
         fraseInicial = mic.recognize_google(audio, language='pt-BR')
-            
+
+        if re.search(r'\bExecutar\b', frase1, re.IGNORECASE):
+            comando = "executar"
+            engine.say("Executando comando")
+            engine.runAndWait()   
 
         if re.search(r'\bSexta-feira\b', fraseInicial, re.IGNORECASE):
-            engine.say(f"Olá Diego me chamo Sexta-Feira, sou sua assistente virtual integrada ao seu dispositivo robótico, agora, iremos iniciar a nossa interação, caso precise de ajuda, é só dizer")
-            engine.runAndWait()
+           # engine.say(f"Olá Diego me chamo Sexta-Feira, sou sua assistente virtual integrada ao seu dispositivo robótico, agora, iremos iniciar a nossa interação, caso precise de ajuda, é só dizer")
+           # engine.runAndWait()
 
             while True:
                 print("123")
-                engine.say(f"O que deseja?")
-                engine.runAndWait()
+               # engine.say(f"O que deseja?")
+               # engine.runAndWait()
                 with sr.Microphone() as source:
                     # faz ajuste no microfone e melhora o audio
                     mic.adjust_for_ambient_noise(source)
@@ -72,7 +76,7 @@ def iniciar_assistente():
                     
                     if re.search(r'\bExecutar\b', frase1, re.IGNORECASE):
                         comando = "executar"
-                    engine.say(f"Você disse: {frase1}")
+                    engine.say("Executando comando")
                     engine.runAndWait()
 
                     if re.search(r'\bPare\b', frase1, re.IGNORECASE):
@@ -91,4 +95,7 @@ def iniciar_assistente():
 
     except:
         pass
+
+
+
 

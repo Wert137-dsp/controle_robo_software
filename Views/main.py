@@ -7,7 +7,7 @@ import json
 import secrets
 import time
 import threading
-
+from queue import Queue
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from Models import Programa, Posicao, Delay, Robo
@@ -31,17 +31,85 @@ def teste():
 
 def executarPosicao(nome):
 
-        print("123123")
-        sql = "select eixo1, eixo2, eixo3, eixo4, eixo5, eixo6 from posicao where nome = %s"
-        valores = (nome,)
-        conexao_bd.cursor.execute(sql, valores)
+        sql = "select eixoA, eixoB from posicao where nome = %s"
 
-        res = conexao_bd.cursor.fetchall()
+        conexao_bd.cursor.execute(sql, (nome,))
+        colunas = conexao_bd.cursor.column_names
+        result = [dict(zip(colunas, linhas)) for linhas in conexao_bd.cursor.fetchall()]
+        print(result)
 
-        print(res)
-        mqt.enviar_comando(json.dumps(res))
+      
+
+        print(result)
+        mqt.enviar_comando(json.dumps(result[0]))
+# Função para processar a fila de fala
+
+fala_queue = Queue()
+def processar_fala():
+    while True:
+        mensagem = fala_queue.get()  # Pega a mensagem da fila
+        if mensagem is None:
+            break  # Se a mensagem for None, o loop termina
+        engine.say(mensagem)
+        engine.runAndWait()
+
+# Inicia o thread que vai processar a fila de fala
+thread_fala = threading.Thread(target=processar_fala)
+thread_fala.daemon = True
+thread_fala.start()
 
 
+# Função que processa o comando de voz
+def checar_comando():
+    try:
+        mic = sr.Recognizer()
+        with sr.Microphone() as source:
+            print("Ajustando para ruído ambiente...")
+            mic.adjust_for_ambient_noise(source)
+            print("Pronto, pode falar.")
+            audio = mic.listen(source)
+
+        # Processar o comando de voz
+        frase = mic.recognize_google(audio, language='pt-BR')
+        print(f"Você disse: {frase}")
+
+        # Usar expressão regular para capturar o comando e nome
+        match = re.search(r'\b(Executar|Faça)\b\s+([A-Za-z]+)\s*(\d+)?', frase, re.IGNORECASE)
+        if match:
+            acao = match.group(1)  # "Executar" ou "Faça"
+            nome_comando = match.group(2).strip()  # Nome do comando (ex: "Movimento")
+            num = match.group(3) if match.group(3) else "0"  # Número opcional
+
+            print(f"Ação: {acao}, Nome do comando: {nome_comando}, Número: {num}")
+
+            # Conectar ao banco de dados e verificar se o comando existe
+            try:
+
+                
+                sql = "SELECT nome FROM posicao WHERE nome = %s"
+                conexao_bd.cursor.execute(sql, (nome_comando + num,))
+                if conexao_bd.cursor.fetchone():  # Verifica se encontrou um comando correspondente
+                    executarPosicao(nome_comando + num)
+                    fala_queue.put(f"Executando {nome_comando + num}")
+                else:
+                    fala_queue.put("Comando não encontrado.")
+            except:
+                print(f"Erro ao conectar ao banco de dados: ")
+                fala_queue.put("Erro ao acessar o banco de dados.")
+
+        else:
+            print("Comando inválido ou não reconhecido.")
+            fala_queue.put("Comando inválido ou não reconhecido.")
+
+    except sr.UnknownValueError:
+        print("Não consegui entender o que você disse.")
+        fala_queue.put("Não consegui entender o que você disse.")
+    except sr.RequestError as e:
+        print(f"Erro de serviço de reconhecimento: {e}")
+        fala_queue.put(f"Erro de serviço de reconhecimento: {e}")
+    except Exception as e:
+        print(f"Erro inesperado: {e}")
+        fala_queue.put(f"Erro inesperado: {e}")
 
         
 
@@ -52,6 +120,8 @@ def webPage():
     app.secret_key = secrets.token_hex(16)
 
     print(app.secret_key)
+
+
 
     @app.route("/")
     def index():
@@ -76,20 +146,20 @@ def webPage():
             return render_template("login_cadastro.html")
         else:
             return redirect("/")
-        
+    '''
     @app.route("/enviarEixo", methods=["POST"])
     def receberEixo():
         dados = request.json
-        print(dados.get("eixo")+": "+dados.get("valor"))
+        print(dados.get("eixoA")+": "+dados.get("valor"))
         mqt.enviar_comando(dados)
         return jsonify({"message": "Eixo recebido"}), 200
-    
+    '''
     @app.route("/salvarPosicao", methods = ["POST"])
     def salvarPosicao():
         dados = request.json
 
         posicao = Posicao()
-        posicao.posicao(dados.get("nome"), dados.get("eixoA"), dados.get("eixoB"), dados.get("eixoC"), dados.get("eixoD"), dados.get("eixoE"), dados.get("eixoF"))
+        posicao.posicao(dados.get("nome"), dados.get("eixoA"), dados.get("eixoB"))
         
         sq = "select * from posicao where nome = %s"
         valores = (dados.get("nome"),)
@@ -100,9 +170,9 @@ def webPage():
 
         if len(dic) == 0:
 
-            sql = "insert into posicao(nome, eixo1, eixo2, eixo3, eixo4,eixo5,eixo6)values(%s,%s,%s,%s,%s,%s,%s)"
+            sql = "insert into posicao(nome, eixoA, eixoB)values(%s,%s,%s)"
             
-            valores = (dados.get("nome"), dados.get("eixoA"), dados.get("eixoB"), dados.get("eixoC"), dados.get("eixoD"), dados.get("eixoE"), dados.get("eixoF"))
+            valores = (dados.get("nome"), dados.get("eixoA"), dados.get("eixoB"))
             conexao_bd.cursor.execute(sql, valores)
             
             conexao_bd.conexao.commit()
@@ -116,77 +186,49 @@ def webPage():
             return jsonify({"message": "Nome da posição já salva"}), 400
 
 
+    @app.route("/enviarEixo", methods = ["POST"])
+    def enviarEixo():
+
+        dados = request.json
+        
+        print(dados)
+        mqt.enviar_comando(json.dumps(dados))
+
+        return jsonify({"message": "Ok"}), 200 
+    
+
     @app.route("/moverRobo", methods = ["POST"])
     def moverRobo():
 
         dados = request.json
         
         print(dados)
-        mqt.enviar_comando(dados)
+        mqt.enviar_comando(json.dumps(dados))
 
         return jsonify({"message": "Ok"}), 200 
     
     @app.route("/getPosicoes", methods = ["POST"])
     def getPosicoes():
 
-        conexao_bd.cursor.execute("select id_posicao, nome, eixo1, eixo2, eixo3, eixo4, eixo5, eixo6 from posicao")
+        conexao_bd.cursor.execute("select id_posicao, nome, eixoA, eixoB from posicao")
         colunas = conexao_bd.cursor.column_names
         result = [dict(zip(colunas, linhas)) for linhas in conexao_bd.cursor.fetchall()]
         print(result)
         return jsonify(result)
     
-    @app.route("/checarComando", methods = ["POST"])
-    def checar_comando():
-        
+    @app.route("/checarComando", methods=["POST"])
+    def checar_comando_api():
+        # Cria uma thread para executar a escuta do comando sem bloquear a resposta do Flask
+        thread = threading.Thread(target=checar_comando)
+        thread.start()
 
-        try:
-            mic = sr.Recognizer()
-            with sr.Microphone() as source:
-                print("Ajustando para ruído ambiente...")
-                mic.adjust_for_ambient_noise(source)
-                print("Pronto, pode falar.")
-                audio = mic.listen(source)
-
-            # Processar o comando de voz
-            frase = mic.recognize_google(audio, language='pt-BR')
-            print(f"Você disse: {frase}")
+        # Retorna uma resposta rápida, enquanto o comando de voz está sendo processado
+        return jsonify({"message": "Comando de voz sendo processado"}), 200
             
-            if re.search(r'\bExecutar\b', frase, re.IGNORECASE):
-                print("Comando 'Executar' detectado.")
-                executarPosicao("Teste2")
-
-                engine.say("Executando comando.")
-                engine.runAndWait()
-                
-                
-            
-                # Executar a função de posição
-                
-                
-            elif re.search(r'\bPare\b', frase, re.IGNORECASE):
-                print("Encerrando o assistente.")
-                engine.say("Encerrando o assistente.")
-                engine.runAndWait()
-                
-
-        except sr.UnknownValueError:
-            print("Não consegui entender o que você disse.")
-            engine.say("Não consegui entender o que você disse.")
-            engine.runAndWait()
-        except sr.RequestError as e:
-            print(f"Erro de serviço de reconhecimento: {e}")
-            engine.say("Erro ao acessar o serviço de reconhecimento.")
-            engine.runAndWait()
-            
-        except Exception as e:
-            print(f"Erro inesperado: {e}")
-        finally:
-            # Remover o 'return' aqui para permitir a escuta contínua
-            print("Voltando a ouvir")
             
     
-        return jsonify({"message": "Ok"}), 200 
-
+         
+    
       
 
     app.run()
@@ -206,7 +248,7 @@ try:
     webPage()
     while True:
         
-        checar
+       
         time.sleep(1)
 except KeyboardInterrupt:   
     mqt.desconectar()

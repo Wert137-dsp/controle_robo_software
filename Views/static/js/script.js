@@ -7,14 +7,16 @@ window.onload = function(){
 
     eixoA = document.getElementById("eixo_a")
     eixoB = document.getElementById("eixo_b")
-    eixoC = document.getElementById("eixo_c")
+   /* eixoC = document.getElementById("eixo_c")
     eixoD = document.getElementById("eixo_d")
     eixoE = document.getElementById("eixo_e")
-    eixoF = document.getElementById("eixo_f")
+    eixoF = document.getElementById("eixo_f")*/
 
     nomePosicao = document.getElementById("nomePosicao")
     btnSalvar = document.getElementById("saveBtn")
     btnMover = document.getElementById("moveBtn")
+    btnAssistente = document.getElementById("btnAssistente")
+
 
     selectPosition = document.getElementById("select_position")
 
@@ -58,12 +60,12 @@ window.onload = function(){
 
         var id = event.target.selectedIndex
         index_selected = id
-        eixoA.value = eixos[id-1].eixo1
-        eixoB.value = eixos[id-1].eixo2
-        eixoC.value = eixos[id-1].eixo3
-        eixoD.value = eixos[id-1].eixo4
-        eixoE.value = eixos[id-1].eixo5
-        eixoF.value = eixos[id-1].eixo6
+        eixoA.value = eixos[id-1].eixoA
+        eixoB.value = eixos[id-1].eixoB
+       /* eixoC.value = eixos[id-1].eixoC
+        eixoD.value = eixos[id-1].eixoD
+        eixoE.value = eixos[id-1].eixoE
+        eixoF.value = eixos[id-1].eixoF*/
 
     })
 
@@ -81,10 +83,10 @@ window.onload = function(){
                 nome: nomePosicao.value,
                 eixoA: eixoA.value,
                 eixoB: eixoB.value,
-                eixoC: eixoC.value,
+               /* eixoC: eixoC.value,
                 eixoD: eixoD.value,
                 eixoE: eixoE.value,
-                eixoF: eixoF.value
+                eixoF: eixoF.value*/
             })
         })
         .then(response => response.json())
@@ -102,7 +104,7 @@ window.onload = function(){
         })
     }
 
-    function moverRobo(){
+    function moverRobo(eixo){
 
         fetch("/moverRobo",{
 
@@ -114,23 +116,13 @@ window.onload = function(){
             body: JSON.stringify({
                 eixoA: eixoA.value,
                 eixoB: eixoB.value,
-                eixoC: eixoC.value,
+              /*  eixoC: eixoC.value,
                 eixoD: eixoD.value,
                 eixoE: eixoE.value,
-                eixoF: eixoF.value
+                eixoF: eixoF.value*/
             })
         })
-        .then(response => response.json())
-        .then(data =>{
-
-           console.log(data.messate)
-        })
-        .catch(error => {
-
-            
-            console.log("Erro ao mover")
-            alert(error)
-        })
+       
 
     }
 
@@ -160,6 +152,11 @@ window.onload = function(){
     }
 
     
+    btnAssistente.addEventListener("click", function(){
+        fetch("/checarComando", {method: "POST"})
+    })
+
+
     btnSalvar.addEventListener("click", function(){
         if(!(nomePosicao.value == "")){
 
@@ -180,44 +177,67 @@ window.onload = function(){
 
         console.log("Eixo A: "+eixoA.value)
 
-       enviarEixo(eixoA.id, eixoA.value)
+        fetch("/enviarEixo",{
+
+            method: "POST",
+            headers: {
+
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify({
+                eixoA: eixoA.value,
+                
+            })
+        })
     })
 
     eixoB.addEventListener("input", function(){
 
         console.log("Eixo B: "+eixoB.value)
-        enviarEixo(eixoB.id, eixoB.value)
-    })
+        fetch("/enviarEixo",{
 
+            method: "POST",
+            headers: {
+
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify({
+                eixoB: eixoB.value,
+                
+              
+            })
+        })
+    })
+/*
     eixoC.addEventListener("input", function(){
 
         console.log("Eixo C: "+eixoC.value)
-        enviarEixo(eixoC.id, eixoC.value)
+       moverRobo()
     })
 
     eixoD.addEventListener("input", function(){
 
         console.log("Eixo D: "+eixoD.value)
-        enviarEixo(eixoD.id, eixoD.value)
+        moverRobo()
     })
 
     eixoE.addEventListener("input", function(){
 
         console.log("Eixo E: "+eixoE.value)
-        enviarEixo(eixoE.id, eixoE.value)
+        moverRobo()
     })
 
     eixoF.addEventListener("input", function(){
 
         console.log("Eixo F: "+eixoF.value)
-        enviarEixo(eixoF.id, eixoF.value)
-    })
+        moverRobo()
+    })*/
 
     getPosicoes();
 
-    setInterval(() => {
+   /* setInterval(() => {
         fetch("/checarComando", {method: "POST"})
-    }, 5000);
+    }, 5000);*/
 }
 
 
