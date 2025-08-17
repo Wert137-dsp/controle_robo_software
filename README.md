@@ -34,3 +34,49 @@ Utiliza Python, JavaScript, HTML e CSS para interligar visualização, lógica e
 
 ##  Estrutura do Projeto
 
+controle_robo_software/
+├── Controllers/
+├── Models/
+├── Views/
+├── controle_robo/
+├── bd_robo.sql
+└── teste.py
+
+## Começando
+
+git clone https://github.com/Wert137-dsp/controle_robo_software.git
+cd controle_robo_software
+python -m venv venv
+source venv/bin/activate  # ou venv\Scripts\activate no Windows
+pip install -r requirements.txt  # se aplicável
+
+
+## Uso
+
+# Importando o Banco
+sqlite3 bd_robo.db < bd_robo.sql
+
+
+# Execute a aplicação:
+
+python controle_robo/main.py
+
+
+##Tecnologias
+
+- Python – Lógica backend.
+
+- HTML / CSS / JavaScript – Interface de usuário.
+
+- SQL – Estrutura de banco de dados.
+
+## Contribuição
+
+1. Fork o projeto.
+2. Crie uma branch: feature/sua-alteracao.
+3. Faça commits claros.
+4. Abra um Pull Request explicando suas mudanças.
+
+
+
+
