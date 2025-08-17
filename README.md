@@ -1,14 +1,36 @@
-Se você chegou até aqui está no bom caminho.
+# Controle Robo Software
 
-Aqui serão inscritas as intruções necessárias para se trabalhar com esse projeto de forma organizada
+[![Status do Projeto](https://img.shields.io/badge/status-em_desenvolvimento-blue.svg)](#)  
+[![Linguagens](https://img.shields.io/github/languages/count/Wert137-dsp/controle_robo_software)](#)  
+[![Licença](https://img.shields.io/github/license/Wert137-dsp/controle_robo_software)](#)
 
-Para qualquer alteração no projeto crie uma branch para não atrapalhar a principal
+##  Descrição
 
-git checkout 'nome_da_branch_de_mudanca'
+**Controle Robo Software** é uma aplicação para gerenciar o controle de um robô, com interface web para controlar e monitorar em tempo real, e backend estruturado segundo o padrão MVC.
+Utiliza Python, JavaScript, HTML e CSS para interligar visualização, lógica e dados.
 
-git add .
-git commit -m "nome da commit/alteração"
+---
 
-git push -u origin 'branch'
+##  Índice
+- [Funcionalidades](#funcionalidades)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Começando](#começando)
+- [Configuração e Uso](#configuração-e-uso)
+- [Tecnologias](#tecnologias)
+- [Contribuição](#contribuição)
+- [Licença](#licença)
 
-Em Breve mais atualizações
+---
+
+##  Funcionalidades
+
+- Interface web para controle remoto do robô.
+- Estrutura organizada em **Controllers**, **Models** e **Views**.
+- Suporte a banco de dados via SQL (`bd_robo.sql`).
+- Scripts auxiliares para testes (`teste.py`).
+- Fluxo de trabalho com Git: crie *branches*, commit claro e organize suas contribuições.
+
+---
+
+##  Estrutura do Projeto
+
